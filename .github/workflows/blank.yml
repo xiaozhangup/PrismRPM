@@ -1,0 +1,80 @@
+name: Build Prism Launcher RPM
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      use_qt5:
+        description: 'Build with Qt 5 instead of Qt 6?'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: fedora:latest
+
+    steps:
+      - name: Install initial system dependencies
+        run: |
+          dnf install -y rpmdevtools git dnf-plugins-core wget
+
+      - name: Add Adoptium Repository
+        run: |
+          # 导入 Adoptium GPG 密钥并添加仓库
+          rpm --import https://packages.adoptium.net/artifactory/api/gpg/key/public
+          cat <<EOF > /etc/yum.repos.d/adoptium.repo
+          [Adoptium]
+          name=Adoptium
+          baseurl=https://packages.adoptium.net/artifactory/rpm/fedora/\$releasever/\$basearch
+          enabled=1
+          gpgcheck=1
+          gpgkey=https://packages.adoptium.net/artifactory/api/gpg/key/public
+          EOF
+          dnf makecache
+
+      - name: Setup RPM build tree
+        run: |
+          rpmdev-setuptree
+
+      - name: Install build dependencies
+        run: |
+          # 显式安装 temurin 以确保 builddep 能找到它
+          dnf install -y temurin-17-jdk
+          
+          if [ "${{ github.event.inputs.use_qt5 }}" == "true" ]; then
+            dnf builddep -y -D "_without_qt6 1" prismlauncher.spec
+          else
+            dnf builddep -y prismlauncher.spec
+          fi
+
+      - name: Download sources and move patches
+        run: |
+          # 下载源码并自动放入 ~/rpmbuild/SOURCES
+          spectool -g -R prismlauncher.spec
+          # 拷贝补丁
+          cp *.patch ~/rpmbuild/SOURCES/ || true
+
+      - name: Build RPM
+        run: |
+          if [ "${{ github.event.inputs.use_qt5 }}" == "true" ]; then
+            rpmbuild -bb --without qt6 prismlauncher.spec
+          else
+            rpmbuild -bb prismlauncher.spec
+          fi
+
+      - name: Prepare Artifacts for upload
+        run: |
+          mkdir -p output/
+          find ~/rpmbuild/RPMS/ -name "*.rpm" -exec cp {} output/ \;
+
+      - name: Upload RPM Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: PrismLauncher-Fedora-RPM
+          path: output/*.rpm
+          if-no-files-found: error
