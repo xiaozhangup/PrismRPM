@@ -19,6 +19,9 @@ jobs:
     container: fedora:latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
       - name: Install initial system dependencies
         run: |
           dnf install -y rpmdevtools git dnf-plugins-core wget
