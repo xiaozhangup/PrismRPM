@@ -75,6 +75,7 @@ BuildRequires:    cmark
 BuildRequires:    pkgconfig(scdoc)
 BuildRequires:    pkgconfig(zlib)
 BuildRequires:    pkgconfig(gamemode)
+BuildRequires:    pkgconfig(tomlplusplus)
 
 Requires:         qt%{qt_version}-qtimageformats
 Requires:         qt%{qt_version}-qtsvg
