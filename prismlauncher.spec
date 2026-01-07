@@ -63,6 +63,7 @@ BuildRequires:    cmake(Qt6Core5Compat)
 BuildRequires:    cmake(ghc_filesystem)
 
 BuildRequires:    pkgconfig(libcmark)
+BuildRequires:    pkgconfig(gamemode)
 # https://bugzilla.redhat.com/show_bug.cgi?id=2166815
 # Fedora versions < 38  (and thus RHEL < 10) don't contain cmark's binary target
 # We need that
