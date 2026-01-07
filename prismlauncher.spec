@@ -63,8 +63,8 @@ BuildRequires:    cmake(Qt6Core5Compat)
 BuildRequires:    cmake(ghc_filesystem)
 
 BuildRequires:    pkgconfig(libcmark)
-BuildRequires:    pkgconfig(gamemode)
 BuildRequires:    pkgconfig(libqrencode)
+BuildRequires:    pkgconfig(libarchive)
 # https://bugzilla.redhat.com/show_bug.cgi?id=2166815
 # Fedora versions < 38  (and thus RHEL < 10) don't contain cmark's binary target
 # We need that
@@ -74,6 +74,7 @@ BuildRequires:    cmark
 
 BuildRequires:    pkgconfig(scdoc)
 BuildRequires:    pkgconfig(zlib)
+BuildRequires:    pkgconfig(gamemode)
 
 Requires:         qt%{qt_version}-qtimageformats
 Requires:         qt%{qt_version}-qtsvg
@@ -90,8 +91,6 @@ Suggests:         java-1.8.0-openjdk
 Recommends:       xrandr
 # libflite needed for using narrator in minecraft
 Recommends:       flite
-# Prism supports enabling gamemode
-Suggests:         gamemode
 
 # Added 2024-10-20
 Obsoletes:        prismlauncher-qt5 < 9.0-1
