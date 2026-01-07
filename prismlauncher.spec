@@ -146,7 +146,7 @@ appstream-util validate-relax --nonet \
 %{_bindir}/prismlauncher
 %{_datadir}/PrismLauncher/*
 %{_datadir}/applications/org.prismlauncher.PrismLauncher.desktop
-%{_datadir}/icons/hicolor/scalable/apps/org.prismlauncher.PrismLauncher.svg
+%{_datadir}/icons/hicolor/*/apps/org.prismlauncher.PrismLauncher.*
 %{_datadir}/mime/packages/modrinth-mrpack-mime.xml
 %{_datadir}/qlogging-categories?/prismlauncher.categories
 %{_mandir}/man?/prismlauncher.*
