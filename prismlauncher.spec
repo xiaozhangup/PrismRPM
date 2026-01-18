@@ -23,7 +23,7 @@
 %endif
 
 Name:             prismlauncher
-Version:          10.0.0
+Version:          10.0.2
 Release:          %autorelease
 # See COPYING.md for more information
 # Each file in the source tree also contains a SPDX-License-Identifier header
